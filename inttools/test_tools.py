@@ -37,3 +37,5 @@ def fp_test():
     for i in not_primes:
         assert not isprime(i)
 
+
+'''prime divisors tests'''

@@ -1,5 +1,8 @@
+import math
+
+
 def gcd(a, b):
-    '''compute greatest common denominator of two integers
+    '''gcd(a, b): compute greatest common denominator of two integers
         
         a, b: integers
         '''
@@ -9,7 +12,7 @@ def gcd(a, b):
 
 
 def lcm(a, b):
-    '''compute least common multiple of two integers
+    '''lcm(a, b): compute least common multiple of two integers
         
         a, b: integers
         '''
@@ -17,7 +20,7 @@ def lcm(a, b):
 
 
 def lcmm(*args):
-    '''compute least common multiple of a list of integers
+    '''lcmm(a, b, ... ): compute least common multiple of a number of integers
         
         *args: a list of integers
         '''
@@ -25,7 +28,7 @@ def lcmm(*args):
 
 
 def isprime(n):
-    '''test if an integer is a prime
+    '''isprime(n): test if an integer is a prime
         
         n: integer
         '''
@@ -54,7 +57,7 @@ def isprime(n):
 
 
 def sieve(n):
-    '''sieve method to generate prime numbers up to n
+    '''sieve(n): sieve method to generate prime numbers up to n
         
         n: integer
         return: list of primes
@@ -70,7 +73,7 @@ def sieve(n):
 
 
 def sieve2(n):
-    '''sieve method to generate prime numbers up to n
+    '''sieve2(n): sieve method to generate prime numbers up to n
         
         similar to the 'sieve' function, except that a generator is returned 
         instead of a list.
@@ -93,7 +96,7 @@ def sieve2(n):
 
 
 def nth_prime(n):
-    '''compute the nth prime number, using the bound from 
+    '''nth_prime(n): compute the nth prime number, using the bound from 
         http://mathdl.maa.org/images/cms_upload/jaroma03200545640.pdf
         
         pn <= n * math.log(n) + n * (math.log(math.log(n)) - 0.9385)
@@ -105,3 +108,20 @@ def nth_prime(n):
     pn = int( n * log(n) + n * (log(log(n)) - 0.9385) )
     
     return sieve(pn)[n - 1]
+
+
+def prime_divisors(n):
+    '''prime_divisors(n): compute the prime divisors of an integer n
+        
+        n: integer
+        return: list of prime divisors
+        '''
+    v = int(math.sqrt(n))
+    
+    while v > 1:
+        if n % v == 0:
+            return prime_divisors(v) + ([] if v == 1 else prime_divisors(n/v))
+        
+        v -= 1
+    
+    return [n]
