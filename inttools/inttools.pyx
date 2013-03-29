@@ -1,4 +1,4 @@
-import math
+from math import log, sqrt
 
 
 def gcd(a, b):
@@ -32,7 +32,6 @@ def isprime(n):
         
         n: integer
         '''
-    import math
     
     if n <= 1:
         return False
@@ -44,7 +43,7 @@ def isprime(n):
     elif n > 2 and n % 2 == 0:
         return False
     elif n > 3 and ((n + 1) % 6 == 0 or (n - 1) % 6 == 0):
-        for i in xrange(2, int(math.sqrt(n)) + 1):
+        for i in xrange(2, int(sqrt(n)) + 1):
             if n % i == 0:
                 return False
             else:
@@ -103,7 +102,6 @@ def nth_prime(n):
         
         and then sieve to get the nth prime
         '''
-    from math import log
     
     pn = int( n * log(n) + n * (log(log(n)) - 0.9385) )
     
@@ -116,7 +114,7 @@ def prime_divisors(n):
         n: integer
         return: list of prime divisors
         '''
-    v = int(math.sqrt(n))
+    v = int(sqrt(n))
     
     while v > 1:
         if n % v == 0:
