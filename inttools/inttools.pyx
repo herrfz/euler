@@ -1,7 +1,7 @@
-from math import log, sqrt
+from libc.math cimport log, sqrt
 
 
-def gcd(a, b):
+def gcd(int a, int b):
     '''gcd(a, b): compute greatest common denominator of two integers
         
         a, b: integers
@@ -11,7 +11,7 @@ def gcd(a, b):
     return a
 
 
-def lcm(a, b):
+def lcm(int a, int b):
     '''lcm(a, b): compute least common multiple of two integers
         
         a, b: integers
@@ -27,7 +27,7 @@ def lcmm(*args):
     return reduce(lcm, args)
 
 
-def isprime(n):
+def isprime(int n):
     '''isprime(n): test if an integer is a prime
         
         n: integer
@@ -55,7 +55,7 @@ def isprime(n):
     return True
 
 
-def sieve(n):
+def sieve(int n):
     '''sieve(n): sieve method to generate prime numbers up to n
         
         n: integer
@@ -71,7 +71,7 @@ def sieve(n):
     return [i for i, prime in enumerate(A) if prime]
 
 
-def sieve2(n):
+def sieve2(int n):
     '''sieve2(n): sieve method to generate prime numbers up to n
         
         similar to the 'sieve' function, except that a generator is returned 
@@ -94,31 +94,40 @@ def sieve2(n):
             yield i
 
 
-def nth_prime(n):
+def nth_prime(int n):
     '''nth_prime(n): compute the nth prime number, using the bound from 
         http://mathdl.maa.org/images/cms_upload/jaroma03200545640.pdf
         
-        pn <= n * math.log(n) + n * (math.log(math.log(n)) - 0.9385)
+        pn <= n * ln(n) + n * (ln(ln(n)) - 0.9385)
         
         and then sieve to get the nth prime
         '''
+    cdef int pn
     
     pn = int( n * log(n) + n * (log(log(n)) - 0.9385) )
     
     return sieve(pn)[n - 1]
 
 
-def prime_divisors(n):
+def prime_divisors(int n):
     '''prime_divisors(n): compute the prime divisors of an integer n
         
         n: integer
         return: list of prime divisors
         '''
+    cdef int v
+    
+    if n <= 1:
+        return None
+    
     v = int(sqrt(n))
     
     while v > 1:
         if n % v == 0:
-            return prime_divisors(v) + ([] if v == 1 else prime_divisors(n/v))
+            if v == 1:
+                return prime_divisors(v) + []
+            else:
+                return prime_divisors(v) + prime_divisors(n/v)
         
         v -= 1
     
