@@ -22,6 +22,8 @@ def lcm(int a, int b):
 def lcmm(*args):
     '''lcmm(a, b, ... ): compute least common multiple of a number of integers
         
+        other usage: lcmm(*args)
+        
         *args: a list of integers
         '''
     return reduce(lcm, args)
@@ -32,6 +34,7 @@ def isprime(int n):
         
         n: integer
         '''
+    cdef int i 
     
     if n <= 1:
         return False
@@ -61,6 +64,8 @@ def sieve(int n):
         n: integer
         return: list of primes
         '''
+    cdef int i, j, prime
+    
     A = [0, 0] + [1 for _ in xrange(n-1)]
     
     for i in xrange(2, int(n**.5)):
@@ -83,6 +88,8 @@ def sieve2(int n):
         if a list of primes is not strictly needed, it is recommended to use
         this method instead of 'sieve'
         '''
+    cdef int i, j 
+    
     A = [0, 0] + [1 for _ in xrange(n-1)]
     
     for i in xrange(2, n):
@@ -132,3 +139,20 @@ def prime_divisors(int n):
         v -= 1
     
     return [n]
+
+
+def divisors(int n):
+    '''divisors(n): compute the divisors of an integer n
+        
+        n: integer
+        return: list of divisors 1..n
+        '''
+    cdef int i
+    divs = []
+    
+    for i in xrange(1, int(n**.5) + 1):
+        if n % i == 0:
+            divs.append(i)
+            divs.append((n // i))
+    
+    return list(set(divs))
