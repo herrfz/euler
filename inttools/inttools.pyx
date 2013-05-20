@@ -66,14 +66,19 @@ def sieve(int n):
         '''
     cdef int i, j, prime
     
-    A = [0, 0] + [1 for _ in xrange(n-1)]
+    if n <= 1:
+        return []
     
-    for i in xrange(2, int(n**.5)):
-        if A[i] == 1:
-            for j in xrange(i*i, n+1, i):
-                A[j] = 0
+    else:
     
-    return [i for i, prime in enumerate(A) if prime]
+        A = [0, 0] + [1 for _ in xrange(n-1)]
+    
+        for i in xrange(2, int(n**.5) + 1):
+            if A[i] == 1:
+                for j in xrange(i*i, n+1, i):
+                    A[j] = 0
+    
+        return [i for i, prime in enumerate(A) if prime]
 
 
 def sieve2(int n):
@@ -87,18 +92,25 @@ def sieve2(int n):
         
         if a list of primes is not strictly needed, it is recommended to use
         this method instead of 'sieve'
+        
+        The A matrix use to compute the sieve still takes a lot of memory, though
         '''
-    cdef int i, j 
+    cdef int i, j
     
-    A = [0, 0] + [1 for _ in xrange(n-1)]
+    if n <= 1:
+        raise StopIteration
     
-    for i in xrange(2, n):
-        if A[i] == 1:
-            if i < int(n**.5):
-                for j in xrange(i*i, n+1, i):
-                    A[j] = 0
+    else:
+    
+        A = [0, 0] + [1 for _ in xrange(n-1)]
+    
+        for i in xrange(2, n + 1):
+            if A[i] == 1:
+                if i < (int(n**.5) + 1):
+                    for j in xrange(i*i, n+1, i):
+                        A[j] = 0
             
-            yield i
+                yield i
 
 
 def nth_prime(int n):
@@ -111,9 +123,27 @@ def nth_prime(int n):
         '''
     cdef int pn
     
-    pn = int( n * log(n) + n * (log(log(n)) - 0.9385) )
+    if n<=0:
+        return None
     
-    return sieve(pn)[n - 1]
+    else:
+        j = 1
+
+        # there are fewer primes under 5016 than the bound pn above
+        # hence this exception
+        if n<=5016:
+            pn = 50000
+        else:
+            pn = int( n * log(n) + n * (log(log(n)) - 0.9385) )
+
+        for i in sieve2(pn):
+            if j==n:
+                p = i
+                break
+            else:
+                j += 1
+    
+        return p
 
 
 def prime_divisors(int n):
